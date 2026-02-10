@@ -35,6 +35,17 @@ body {
   overflow-x: hidden;
 }
 
+/* Performance optimization for animations on mobile */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -188,6 +199,7 @@ body {
   display: flex;
   list-style: none;
   gap: 2rem;
+  transition: transform 0.3s ease;
 }
 
 .nav-menu li {
@@ -514,20 +526,94 @@ body {
   opacity: 0.95;
 }
 
-.about-intro {
-  margin-bottom: 2.5rem;
+.about-text {
+  position: relative;
 }
 
-.about-intro h3 {
-  font-size: 2rem;
+.certifications {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.cert-badge {
+  background: var(--bg-light);
+  color: var(--primary-color);
+  padding: 0.7rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 2px solid var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.cert-badge:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateX(5px);
+}
+
+.experience {
+  margin-bottom: 2rem;
+}
+
+.experience h3 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.experience p {
+  color: var(--text-light);
+  font-size: 1.05rem;
+}
+
+.specializations {
+  margin-bottom: 2rem;
+}
+
+.specializations h3 {
   color: var(--text-dark);
+  font-size: 1.4rem;
   margin-bottom: 1rem;
 }
 
-.intro-text {
-  font-size: 1.1rem;
-  line-height: 1.8;
+.specializations ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.specializations li {
   color: var(--text-light);
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.specializations li::before {
+  content: '🍃';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.personal-message {
+  background: linear-gradient(135deg, var(--accent-color), var(--bg-cream));
+  padding: 2rem;
+  border-radius: 15px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.personal-message p {
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--text-dark);
 }
 
 .certifications-grid {
@@ -1096,6 +1182,24 @@ body {
   opacity: 0;
   cursor: ew-resize;
   z-index: 3;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 60px;
+  height: 60px;
+  cursor: ew-resize;
+}
+
+.slider::-moz-range-thumb {
+  width: 60px;
+  height: 60px;
+  cursor: ew-resize;
+  border: none;
+  background: transparent;
 }
 
 .slider-handle {
@@ -1528,6 +1632,17 @@ body {
   font-family: inherit;
   transition: all 0.3s ease;
   background: var(--bg-light);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Prevent zoom on iOS when focusing inputs */
+@media screen and (max-width: 768px) {
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    font-size: 16px;
+  }
 }
 
 .contact-form input:focus,
@@ -1668,18 +1783,146 @@ body {
 }
 
 /* ==================== */
+/* Mobile Menu */
+/* ==================== */
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  align-items: center;
+}
+
+.hamburger {
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--primary-color);
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 2px;
+  background: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  bottom: -8px;
+}
+
+.hamburger.open {
+  background: transparent;
+}
+
+.hamburger.open::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.hamburger.open::after {
+  transform: rotate(-45deg);
+  bottom: 0;
+}
+
+/* Touch-friendly tap targets */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .service-card,
+  .mood-card,
+  .gallery-item,
+  .contact-method,
+  .floating-btn,
+  .slider-btn,
+  .dot {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .nav-menu li {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ==================== */
 /* Responsive Design */
 /* ==================== */
 
-@media (max-width: 968px) {
-  .nav-menu {
-    gap: 1rem;
-    font-size: 0.9rem;
+/* Tablet and Small Desktop (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
   }
 
   .hero-container {
+    gap: 3rem;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .about-content {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+  }
+
+  .certifications {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet (max-width: 968px) */
+@media (max-width: 968px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  /* Hero Section */
+  .hero-container {
     grid-template-columns: 1fr;
     gap: 3rem;
+    padding: 2rem 0;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 5rem 2rem 3rem;
   }
 
   .hero-left .hero-title,
@@ -1689,14 +1932,16 @@ body {
 
   .hero-left {
     align-items: center;
+    order: 2;
+  }
+
+  .hero-right {
+    order: 1;
   }
 
   .hero-buttons {
     justify-content: center;
-  }
-
-  .breathing-container {
-    max-width: 100%;
+    flex-wrap: wrap;
   }
 
   .hero-title {
@@ -1704,60 +1949,177 @@ body {
   }
 
   .hero-tagline {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
-  .hero-buttons {
-    flex-direction: row;
-    gap: 1rem;
-    flex-wrap: wrap;
+  /* Breathing Animation */
+  .breathing-circle {
+    width: 300px;
+    height: 300px;
   }
 
+  .circle {
+    width: 240px;
+    height: 240px;
+  }
+
+  .breathe-text {
+    font-size: 1.6rem;
+  }
+
+  /* About Section */
   .about-content {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 3rem;
   }
 
-  .certifications-grid {
+  .about-text {
+    text-align: center;
+  }
+
+  .certifications {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
+  .cert-badge {
+    justify-content: center;
+  }
+
+  .specializations ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .personal-message {
+    text-align: center;
+  }
+
+  /* Services */
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Mood Selector */
+  .mood-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Contact */
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
 
-  .breathing-circle {
-    width: 280px;
-    height: 280px;
+  /* Testimonials */
+  .testimonials-wrapper {
+    gap: 1.5rem;
   }
 
-  .circle {
-    width: 220px;
-    height: 220px;
+  .slider-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
   }
 
-  .breathe-text {
-    font-size: 1.5rem;
+  /* Gallery */
+  .gallery-row {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
+/* Mobile Landscape and Small Tablet (max-width: 768px) */
 @media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  /* Mobile Navigation */
+  .mobile-menu-toggle {
+    display: block;
+  }
+
   .nav-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: rgba(250, 248, 243, 0.98);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    gap: 0;
+    padding: 2rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 40px var(--shadow);
+    overflow-y: auto;
+  }
+
+  .nav-menu.mobile-open {
+    transform: translateX(0);
+  }
+
+  .nav-menu li {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--bg-cream);
+    font-size: 1.1rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .nav-menu li::after {
     display: none;
   }
 
+  .nav-menu li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-menu li:hover {
+    background: var(--bg-cream);
+  }
+
+  .navbar.scrolled {
+    background: rgba(250, 248, 243, 0.98);
+  }
+
+  /* Typography */
   .section-title {
     font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  /* Hero Section */
+  .hero {
+    padding: 5rem 1.5rem 3rem;
   }
 
   .hero-title {
     font-size: 2rem;
   }
 
+  .hero-tagline {
+    font-size: 1rem;
+  }
+
   .hero-buttons {
     flex-direction: column;
     width: 100%;
+    gap: 0.8rem;
   }
 
   .hero-buttons .btn {
@@ -1765,43 +2127,140 @@ body {
   }
 
   .breathing-circle {
-    width: 250px;
-    height: 250px;
+    width: 260px;
+    height: 260px;
+  }
+
+  .breathing-title {
+    font-size: 1.5rem;
   }
 
   .circle {
-    width: 200px;
-    height: 200px;
+    width: 210px;
+    height: 210px;
   }
 
-  .spec-grid {
-    grid-template-columns: 1fr;
+  .breathe-text {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
   }
 
-  .form-row {
-    grid-template-columns: 1fr;
+  /* About Section */
+  .about {
+    padding: 5rem 0;
   }
 
-  .contact-form-card {
-    padding: 2rem 1.5rem;
+  .about-intro h3 {
+    font-size: 1.6rem;
   }
 
-  .services-grid {
-    grid-template-columns: 1fr;
+  .intro-text {
+    font-size: 1rem;
+  }
+
+  .experience {
+    text-align: center;
+  }
+
+  .experience h3 {
+    font-size: 1.4rem;
+  }
+
+  .specializations h3 {
+    font-size: 1.3rem;
+  }
+
+  .specializations ul li {
+    font-size: 0.95rem;
+  }
+
+  /* Mood Selector */
+  .mood-selector {
+    padding: 4rem 0;
   }
 
   .mood-options {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  .mood-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .mood-emoji {
+    font-size: 3.5rem;
+  }
+
+  .mood-label {
+    font-size: 1rem;
   }
 
   .recommended-service {
     flex-direction: column;
     text-align: center;
+    gap: 1.5rem;
   }
 
   .rec-info {
     text-align: center;
+  }
+
+  .rec-info h4 {
+    font-size: 1.3rem;
+  }
+
+  .recommendation-card {
+    padding: 2.5rem 2rem;
+  }
+
+  /* Services Section */
+  .services {
+    padding: 4rem 0;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .service-icon {
+    font-size: 3rem;
+  }
+
+  .service-card h3 {
+    font-size: 1.3rem;
+  }
+
+  /* Transformation Slider */
+  .transformation {
+    padding: 4rem 0;
+  }
+
+  .before-after {
+    height: 400px;
+  }
+
+  .label {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .posture-icon {
+    font-size: 6rem;
+  }
+
+  .posture-demo p {
+    font-size: 1.2rem;
+  }
+
+  /* Testimonials */
+  .testimonials {
+    padding: 4rem 0;
   }
 
   .testimonials-wrapper {
@@ -1813,36 +2272,107 @@ body {
     width: 100%;
   }
 
-  .slider-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 2rem;
-  }
-
   .testimonial-card {
     padding: 2.5rem 2rem;
   }
 
+  .testimonial-avatar {
+    font-size: 2.5rem;
+  }
+
+  .testimonial-text {
+    font-size: 1rem;
+  }
+
+  /* Gallery */
+  .gallery {
+    padding: 4rem 0;
+  }
+
   .gallery-row {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   .gallery-featured {
     aspect-ratio: 16/9;
   }
 
-  .gallery-placeholder.featured {
-    min-height: 300px;
+  .gallery-icon {
+    font-size: 2.5rem;
   }
 
-  .gallery-placeholder.featured span {
-    font-size: 4rem;
+  .gallery-featured .gallery-icon {
+    font-size: 3.5rem;
   }
 
-  .before-after {
-    height: 400px;
+  .gallery-overlay p {
+    font-size: 1rem;
   }
 
+  .gallery-featured .gallery-overlay p {
+    font-size: 1.5rem;
+  }
+
+  /* Contact Section */
+  .contact {
+    padding: 4rem 0;
+  }
+
+  .contact-intro h3 {
+    font-size: 1.6rem;
+  }
+
+  .contact-intro p {
+    font-size: 1rem;
+  }
+
+  .method-icon {
+    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
+  }
+
+  .method-info h4 {
+    font-size: 1rem;
+  }
+
+  .method-info p {
+    font-size: 0.9rem;
+  }
+
+  .contact-hours h4 {
+    font-size: 1.2rem;
+  }
+
+  .hour-item {
+    font-size: 0.9rem;
+  }
+
+  .contact-form-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .contact-form-card h3 {
+    font-size: 1.6rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Floating Buttons */
   .floating-actions {
     bottom: 1.5rem;
     right: 1.5rem;
@@ -1858,13 +2388,44 @@ body {
   .floating-btn::after {
     display: none;
   }
+
+  .btn-icon {
+    width: 26px;
+    height: 26px;
+  }
 }
 
+/* Mobile Portrait (max-width: 480px) */
 @media (max-width: 480px) {
   .container {
     padding: 0 1rem;
   }
 
+  /* Navigation */
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .nav-container {
+    padding: 0 1rem;
+  }
+
+  /* Typography */
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 0.75rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Hero Section */
   .hero {
     padding: 5rem 1rem 3rem;
   }
@@ -1874,7 +2435,7 @@ body {
   }
 
   .hero-tagline {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .breathing-circle {
@@ -1883,7 +2444,8 @@ body {
   }
 
   .breathing-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
   }
 
   .circle {
@@ -1892,21 +2454,61 @@ body {
   }
 
   .breathe-text {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  .breathing-wrapper .btn {
+    min-width: 200px;
+    font-size: 0.95rem;
+  }
+
+  /* About Section */
+  .about {
+    padding: 4rem 0;
+  }
+
+  .image-placeholder {
+    aspect-ratio: 3/4;
+  }
+
+  .placeholder-icon {
+    font-size: 4rem;
+  }
+
+  .about-intro h3 {
     font-size: 1.5rem;
   }
 
-  .contact-form-card {
-    padding: 2rem 1.5rem;
+  .cert-badge {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
   }
 
-  .floating-btn {
-    width: 50px;
-    height: 50px;
+  .experience h3 {
+    font-size: 1.3rem;
   }
 
-  .btn-icon {
-    width: 24px;
-    height: 24px;
+  .experience p {
+    font-size: 0.9rem;
+  }
+
+  .specializations h3 {
+    font-size: 1.2rem;
+  }
+
+  .specializations ul li {
+    font-size: 0.9rem;
+  }
+
+  .personal-message p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Mood Selector */
+  .mood-selector {
+    padding: 3rem 0;
   }
 
   .mood-options {
@@ -1915,24 +2517,112 @@ body {
   }
 
   .mood-card {
-    padding: 2rem 1.5rem;
+    padding: 1.8rem 1.5rem;
   }
 
   .mood-emoji {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
   }
 
-  .recommended-service {
-    flex-direction: column;
-    padding: 1.5rem;
+  .mood-label {
+    font-size: 0.95rem;
+  }
+
+  .check-mark {
+    width: 25px;
+    height: 25px;
+    font-size: 1rem;
+  }
+
+  .recommendation-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .recommendation-card h3 {
+    font-size: 1.5rem;
   }
 
   .rec-icon {
     font-size: 3rem;
   }
 
-  .recommendation-card {
+  .rec-info h4 {
+    font-size: 1.2rem;
+  }
+
+  .rec-info p {
+    font-size: 0.9rem;
+  }
+
+  /* Services Section */
+  .services {
+    padding: 3rem 0;
+  }
+
+  .service-card {
     padding: 2rem 1.5rem;
+  }
+
+  .service-icon {
+    font-size: 2.8rem;
+  }
+
+  .service-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .service-description {
+    font-size: 0.9rem;
+  }
+
+  .service-meta {
+    gap: 1rem;
+  }
+
+  .meta-item {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .service-benefits {
+    padding: 1.2rem;
+  }
+
+  .service-benefits h4 {
+    font-size: 1rem;
+  }
+
+  .service-benefits li {
+    font-size: 0.9rem;
+  }
+
+  /* Transformation Slider */
+  .transformation {
+    padding: 3rem 0;
+  }
+
+  .before-after {
+    height: 300px;
+  }
+
+  .label {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    top: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .posture-icon {
+    font-size: 5rem;
+  }
+
+  .posture-demo p {
+    font-size: 1.1rem;
+  }
+
+  /* Testimonials */
+  .testimonials {
+    padding: 3rem 0;
   }
 
   .testimonials-wrapper {
@@ -1949,27 +2639,280 @@ body {
     padding: 2rem 1.5rem;
   }
 
+  .testimonial-avatar {
+    font-size: 2.2rem;
+  }
+
+  .stars {
+    font-size: 1rem;
+  }
+
   .testimonial-text {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .testimonial-name {
+    font-size: 0.9rem;
+  }
+
+  .slider-dots {
+    gap: 0.7rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Gallery */
+  .gallery {
+    padding: 3rem 0;
   }
 
   .gallery-row {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .gallery-featured {
     aspect-ratio: 4/3;
   }
 
-  .gallery-placeholder.featured {
-    min-height: 250px;
+  .gallery-item {
+    aspect-ratio: 4/3;
   }
 
-  .before-after {
-    height: 300px;
+  .gallery-icon {
+    font-size: 2.5rem;
+  }
+
+  .gallery-featured .gallery-icon {
+    font-size: 3rem;
+  }
+
+  .gallery-overlay p {
+    font-size: 0.95rem;
+  }
+
+  .gallery-featured .gallery-overlay p {
+    font-size: 1.3rem;
+  }
+
+  /* Contact Section */
+  .contact {
+    padding: 3rem 0;
+  }
+
+  .contact-intro h3 {
+    font-size: 1.5rem;
+  }
+
+  .contact-intro p {
+    font-size: 0.95rem;
+  }
+
+  .contact-method {
+    padding: 1.2rem;
+    gap: 1.2rem;
+  }
+
+  .method-icon {
+    font-size: 1.6rem;
+    width: 45px;
+    height: 45px;
+  }
+
+  .method-info h4 {
+    font-size: 0.95rem;
+  }
+
+  .method-info p {
+    font-size: 0.85rem;
+  }
+
+  .contact-hours {
+    padding: 1.5rem;
+  }
+
+  .contact-hours h4 {
+    font-size: 1.1rem;
+  }
+
+  .hour-item {
+    font-size: 0.85rem;
+    padding: 0.7rem 0;
+  }
+
+  .contact-form-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .contact-form-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .contact-form textarea {
+    min-height: 100px;
+  }
+
+  .btn-submit {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  /* Floating Buttons */
+  .floating-actions {
+    bottom: 1rem;
+    right: 1rem;
+    gap: 0.7rem;
+  }
+
+  .floating-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .footer-tagline {
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Mobile (max-width: 360px) */
+@media (max-width: 360px) {
+  .container {
+    padding: 0 0.8rem;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-tagline {
+    font-size: 0.85rem;
+  }
+
+  .breathing-circle {
+    width: 200px;
+    height: 200px;
+  }
+
+  .circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .breathe-text {
+    font-size: 1.1rem;
+  }
+
+  .breathing-title {
+    font-size: 1.2rem;
+  }
+
+  .mood-emoji {
+    font-size: 3rem;
+  }
+
+  .service-icon {
+    font-size: 2.5rem;
   }
 
   .posture-icon {
-    font-size: 5rem;
+    font-size: 4rem;
+  }
+
+  .before-after {
+    height: 250px;
+  }
+
+  .floating-btn {
+    width: 45px;
+    height: 45px;
+  }
+
+  .btn-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Landscape orientation on mobile devices */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding: 4rem 2rem 2rem;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .hero-right {
+    order: 2;
+  }
+
+  .hero-left {
+    order: 1;
+  }
+
+  .breathing-circle {
+    width: 200px;
+    height: 200px;
+  }
+
+  .circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .breathe-text {
+    font-size: 1.1rem;
+  }
+
+  .nav-menu {
+    height: calc(100vh - 60px);
+    padding: 1rem;
+  }
+
+  .nav-menu li {
+    padding: 0.8rem 0;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .before-after {
+    height: 350px;
   }
 }

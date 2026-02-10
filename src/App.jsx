@@ -10,6 +10,7 @@ function App() {
   const [isBreathing, setIsBreathing] = useState(false)
   const [selectedMood, setSelectedMood] = useState(null)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Breathing animation
   useEffect(() => {
@@ -30,9 +31,22 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [mobileMenuOpen])
+
   // Smooth scroll to section
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    setMobileMenuOpen(false) // Close mobile menu after navigation
   }
 
   const services = [
@@ -127,12 +141,24 @@ function App() {
   ]
 
   return (
-    <div className="app">
+    <div className="app" onClick={(e) => {
+      // Close mobile menu when clicking outside
+      if (mobileMenuOpen && !e.target.closest('.nav-container')) {
+        setMobileMenuOpen(false)
+      }
+    }}>
       {/* Navigation */}
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <div className="logo">YogGuru</div>
-          <ul className="nav-menu">
+          <button 
+            className="mobile-menu-toggle" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}></span>
+          </button>
+          <ul className={`nav-menu ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <li onClick={() => scrollToSection('home')}>Home</li>
             <li onClick={() => scrollToSection('about')}>About</li>
             <li onClick={() => scrollToSection('services')}>Services</li>
